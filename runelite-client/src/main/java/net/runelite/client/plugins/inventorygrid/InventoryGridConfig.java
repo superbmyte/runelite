@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Magic fTail
- * Copyright (c) 2019, osrs-music-map <osrs-music-map@users.noreply.github.com>
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,67 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatfilter;
+package net.runelite.client.plugins.inventorygrid;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("chatfilter")
-public interface ChatFilterConfig extends Config
+@ConfigGroup("inventorygrid")
+public interface InventoryGridConfig extends Config
 {
 	@ConfigItem(
-		keyName = "filterType",
-		name = "Filter type",
-		description = "Configures how the messages are filtered",
-		position = 1
+		keyName = "showItem",
+		name = "Show item",
+		description = "Show a preview of the item in the new slot"
 	)
-	default ChatFilterType filterType()
+	default boolean showItem()
 	{
-		return ChatFilterType.CENSOR_WORDS;
+		return true;
 	}
 
 	@ConfigItem(
-		keyName = "filteredWords",
-		name = "Filtered Words",
-		description = "List of filtered words, separated by commas",
-		position = 2
+		keyName = "showGrid",
+		name = "Show grid",
+		description = "Show a grid on the inventory while dragging"
 	)
-	default String filteredWords()
+	default boolean showGrid()
 	{
-		return "";
+		return true;
 	}
 
 	@ConfigItem(
-		keyName = "filteredRegex",
-		name = "Filtered Regex",
-		description = "List of regular expressions to filter, one per line",
-		position = 3
+		keyName = "showHighlight",
+		name = "Highlight background",
+		description = "Show a green background highlight on the new slot"
 	)
-	default String filteredRegex()
+	default boolean showHighlight()
 	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "filterFriends",
-		name = "Filter Friends",
-		description = "Filter your friends' messages",
-		position = 4
-	)
-	default boolean filterFriends()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "filterClan",
-		name = "Filter Clan Chat Members",
-		description = "Filter your clan chat members' messages",
-		position = 5
-	)
-	default boolean filterClan()
-	{
-		return false;
+		return true;
 	}
 }
