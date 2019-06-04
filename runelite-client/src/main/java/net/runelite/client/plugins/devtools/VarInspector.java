@@ -25,9 +25,11 @@
 package net.runelite.client.plugins.devtools;
 
 import com.google.inject.Inject;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.WindowAdapter;
@@ -119,6 +121,9 @@ class VarInspector extends JFrame
 			{
 				close();
 				plugin.getVarInspector().setActive(false);
+				for(Component c : tracker.getComponents())
+					if(c instanceof JLabel)
+						log.info("VARP_DUMP", ((JLabel)c).getText());
 			}
 		});
 
@@ -161,6 +166,19 @@ class VarInspector extends JFrame
 			trackerOpts.add(cb.getCheckBox());
 		}
 
+		final JButton dumpBtn = new JButton("Copy");
+		dumpBtn.addActionListener(e ->
+		{
+			String clip = "";
+			for(Component c : tracker.getComponents())
+				if(c instanceof JLabel)
+					clip += ((JLabel)c).getText()+"\n";
+			StringSelection stringSelection = new StringSelection(clip);
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clipboard.setContents(stringSelection, null);
+		});
+		trackerOpts.add(dumpBtn);
+
 		final JButton clearBtn = new JButton("Clear");
 		clearBtn.addActionListener(e ->
 		{
@@ -195,8 +213,8 @@ class VarInspector extends JFrame
 				JLabel header = new JLabel("Tick " + tick);
 				header.setFont(FontManager.getRunescapeSmallFont());
 				header.setBorder(new CompoundBorder(
-					BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
-					BorderFactory.createEmptyBorder(3, 6, 0, 0)
+						BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
+						BorderFactory.createEmptyBorder(3, 6, 0, 0)
 				));
 				tracker.add(header);
 			}
